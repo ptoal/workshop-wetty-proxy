@@ -3,9 +3,6 @@
 - name: Deploy Wetty Proxy 
   hosts: all
   become: true
-  vars:
-    student_nums:
-      - 1
 
   roles:
     - wetty-proxy

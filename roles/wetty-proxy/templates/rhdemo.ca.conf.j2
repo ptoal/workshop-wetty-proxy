@@ -10,14 +10,14 @@ CustomLog /opt/rh/httpd24/root/var/log/rhdemo_access_log combined
 DirectoryIndex index.html index.htm index.php index.php4 index.php5
 RewriteEngine on
 
-RedirectMatch ^/$ http://e424.rhdemo.io
+RedirectMatch ^/$ {{ workshop_url }}
 
 # Student Wetty Configuration
 
-{% for num in student_nums %}
+{% for num,ip in workshop_students %}
 RewriteCond %{REQUEST_URI}  ^/student{{num}}/socket.io [NC]
 RewriteCond %{QUERY_STRING} transport=websocket [NC]
-RewriteRule /student{{num}}/socket.io/(.*) ws://localhost:800{{num}}/student{{num}}/socket.io/$1 [P,L]
+RewriteRule /student{{num}}/socket.io/(.*) ws://localhost:{{num + 8000}}/student{{num}}/socket.io/$1 [P,L]
 
 <LocationMatch ^/student{{num}}(.*)>
   DirectorySlash On
