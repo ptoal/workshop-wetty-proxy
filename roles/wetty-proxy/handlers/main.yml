@@ -1,0 +1,7 @@
+---
+# handlers file for wetty-proxy
+- name: Restart HTTPD
+  service: 
+    name: httpd24-httpd
+    state: restarted
+

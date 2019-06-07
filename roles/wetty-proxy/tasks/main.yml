@@ -1,0 +1,5 @@
+- name: Create template
+  template:
+    src: templates/rhdemo.ca.conf.j2
+    dest: /opt/rh/httpd24/root/etc/httpd/conf.d/rhdemo.ca.conf
+  notify: Restart HTTPD

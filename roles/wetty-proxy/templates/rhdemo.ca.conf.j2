@@ -1,0 +1,39 @@
+# Basic Server Configuration
+<VirtualHost 97.107.128.144:80>
+SuexecUserGroup "#514" "#506"
+ServerName ansible.rhdemo.ca
+ServerAlias rhdemo.ca
+SSLEngine off
+DocumentRoot "/opt/rh/httpd24/root/var/www/rhdemo"
+ErrorLog /opt/rh/httpd24/root/var/log/rhdemo_error_log
+CustomLog /opt/rh/httpd24/root/var/log/rhdemo_access_log combined
+DirectoryIndex index.html index.htm index.php index.php4 index.php5
+RewriteEngine on
+
+RedirectMatch ^/$ http://e424.rhdemo.io
+
+# Student Wetty Configuration
+
+{% for num in student_nums %}
+RewriteCond %{REQUEST_URI}  ^/student{{num}}/socket.io [NC]
+RewriteCond %{QUERY_STRING} transport=websocket [NC]
+RewriteRule /student{{num}}/socket.io/(.*) ws://localhost:800{{num}}/student{{num}}/socket.io/$1 [P,L]
+
+<LocationMatch ^/student{{num}}(.*)>
+  DirectorySlash On
+  Require all granted
+  ProxyPassMatch http://127.0.0.1:{{8000 + num}}
+  ProxyPassReverse /student{{num}}
+</LocationMatch>
+{% endfor %}
+
+# Etherpad Configuration
+
+<Directory /opt/rh/httpd24/root/var/www/rhdemo>
+<FilesMatch \.php$>
+SetHandler "proxy:fcgi://127.0.0.1:9001"
+</FilesMatch>
+Require all granted
+AllowOverride All Options=ExecCGI,Includes,IncludesNOEXEC,Indexes,MultiViews,SymLinksIfOwnerMatch
+</Directory>
+</VirtualHost>
