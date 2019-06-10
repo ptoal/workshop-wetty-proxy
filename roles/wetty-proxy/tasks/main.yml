@@ -21,8 +21,16 @@
   
 - debug: msg={{ workshop_students }}
 
-- name: Create template
+- name: httpd.conf is up to date
+  become: true
   template:
     src: templates/rhdemo.ca.conf.j2
     dest: /opt/rh/httpd24/root/etc/httpd/conf.d/rhdemo.ca.conf
   notify: Restart HTTPD
+
+- name: wettyconfig.json is up to date
+  become: false
+  template:
+    src: templates/wettyconfig.json.j2
+    dest: /home/ptoal/wetty/wettyconfig.json
+  notify: Restart forever

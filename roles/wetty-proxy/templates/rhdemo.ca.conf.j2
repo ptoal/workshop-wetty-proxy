@@ -22,7 +22,7 @@ RewriteRule /student{{num}}/socket.io/(.*) ws://localhost:{{num + 8000}}/student
 <LocationMatch ^/student{{num}}(.*)>
   DirectorySlash On
   Require all granted
-  ProxyPassMatch http://127.0.0.1:{{8000 + num}}
+  ProxyPass  http://127.0.0.1:{{8000 + num}}
   ProxyPassReverse /student{{num}}
 </LocationMatch>
 {% endfor %}

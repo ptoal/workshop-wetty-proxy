@@ -2,7 +2,6 @@
 # Main Deploy
 - name: Deploy Wetty Proxy 
   hosts: all
-  become: true
 
   roles:
     - wetty-proxy

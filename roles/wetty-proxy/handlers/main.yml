@@ -1,7 +1,15 @@
 ---
 # handlers file for wetty-proxy
 - name: Restart HTTPD
+  become: true
   service: 
     name: httpd24-httpd
     state: restarted
 
+- name: Stop all forever tasks
+  command: /usr/bin/forever stopall
+  listen: "Restart forever"
+
+- name: Start tasks
+  command: /usr/bin/forever start /home/ptoal/wetty/wettyconfig.json
+  listen: Restart forever

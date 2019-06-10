@@ -1,0 +1,13 @@
+[
+{% for num,ip in workshop_students %}
+  {
+    // Session {{ num }}
+    "append": true,
+    "watch": false,
+    "script": "index.js",
+    "sourceDir": "/home/ptoal/wetty/",
+    "args": ["-p", "{{ 8000 + num }}", "--sshhost", "{{ ip }}", "--sshuser", "student{{num}}", "--base" ,"/student{{num}}"]
+  }{% if loop.last %}{% else %},{% endif %}
+
+{% endfor %}
+]
