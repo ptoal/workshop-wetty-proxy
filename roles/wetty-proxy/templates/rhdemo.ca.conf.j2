@@ -13,6 +13,7 @@ RewriteEngine on
 RedirectMatch ^/$ {{ workshop_url }}
 
 # Student Wetty Configuration
+#Comment
 
 {% for num,ip in workshop_students %}
 RewriteCond %{REQUEST_URI}  ^/student{{num}}/socket.io [NC]
