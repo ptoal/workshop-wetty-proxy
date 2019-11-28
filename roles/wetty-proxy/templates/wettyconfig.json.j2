@@ -6,7 +6,7 @@
     "watch": false,
     "script": "index.js",
     "sourceDir": "/home/ptoal/wetty/",
-    "args": ["-p", "{{ 8000 + num }}", "--sshhost", "{{ ip }}", "--sshuser", "student{{num}}", "--base" ,"/student{{num}}"]
+    "args": ["-p", "{{ 8000 + num }}", "--sshhost", "{{ ip }}", "--sshuser", "student{{num}}", "--base" ,"/ssh/student{{num}}"]
   }{% if loop.last %}{% else %},{% endif %}
 
 {% endfor %}
