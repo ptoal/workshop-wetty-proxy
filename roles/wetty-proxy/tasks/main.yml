@@ -1,16 +1,16 @@
-- name: Get Index Page from Workshop Site
-  uri:
-    url: "{{ workshop_url }}"
-    status_code: 200 
-    return_content: yes
-    validate_certs: no 
-  register: workshop_index_html
+# - name: Get Index Page from Workshop Site
+#   uri:
+#     url: "{{ workshop_url }}"
+#     status_code: 200 
+#     return_content: yes
+#     validate_certs: no 
+#   register: workshop_index_html
   
 # Yes.  This is exceptionally ugly...  and it works.
 - name: Get Student Pod Info
   shell: grep -E '\bssh student[0-9]{1,2}@[0-9].*\b' | sed -E 's/.*student([0-9]{1,2})\@([0-9.]*).*$/\1 \2/'
   args:
-    stdin: "{{ workshop_index_html.content }}"
+    stdin: "{{ lookup('url', workshop_url ) }}"
   register: student_list
 
 # Unfortunate... But it's one way to populate the info...

@@ -16,16 +16,24 @@ RedirectMatch ^/$ {{ workshop_url }}
 #Comment
 
 {% for num,ip in workshop_students %}
-RewriteCond %{REQUEST_URI}  ^/student{{num}}/socket.io [NC]
+RewriteCond %{REQUEST_URI}  ^/ssh/student{{num}}/socket.io [NC]
 RewriteCond %{QUERY_STRING} transport=websocket [NC]
-RewriteRule /student{{num}}/socket.io/(.*) ws://localhost:{{num + 8000}}/student{{num}}/socket.io/$1 [P,L]
+RewriteRule /ssh/student{{num}}/socket.io/(.*) ws://localhost:{{num + 8000}}/ssh/student{{num}}/socket.io/$1 [P,L]
+
+<LocationMatch ^/ssh/student{{num}}(.*)>
+  DirectorySlash On
+  Require all granted
+  ProxyPass  http://127.0.0.1:{{8000 + num}}
+  ProxyPassReverse /ssh/student{{num}}
+</LocationMatch>
 
 <LocationMatch ^/student{{num}}(.*)>
   DirectorySlash On
   Require all granted
-  ProxyPass  http://127.0.0.1:{{8000 + num}}
+  ProxyPass  http://student{{num}}.{{workshop_url|urlsplit('hostname')}}:8080
   ProxyPassReverse /student{{num}}
 </LocationMatch>
+
 {% endfor %}
 
 # Etherpad Configuration
