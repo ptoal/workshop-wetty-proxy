@@ -13,25 +13,24 @@ RewriteEngine on
 RedirectMatch ^/$ {{ workshop_url }}
 
 # Student Wetty Configuration
-#Comment
 
 {% for num,ip in workshop_students %}
 RewriteCond %{REQUEST_URI}  ^/ssh/student{{num}}/socket.io [NC]
 RewriteCond %{QUERY_STRING} transport=websocket [NC]
 RewriteRule /ssh/student{{num}}/socket.io/(.*) ws://localhost:{{num + 8000}}/ssh/student{{num}}/socket.io/$1 [P,L]
 
-<LocationMatch ^/ssh/student{{num}}(.*)>
-  DirectorySlash On
-  Require all granted
-  ProxyPass  http://127.0.0.1:{{8000 + num}}
-  ProxyPassReverse /ssh/student{{num}}
-</LocationMatch>
-
 <LocationMatch ^/student{{num}}(.*)>
   DirectorySlash On
   Require all granted
   ProxyPass  http://student{{num}}.{{workshop_url|urlsplit('hostname')}}:8080
   ProxyPassReverse /student{{num}}
+</LocationMatch>
+
+<LocationMatch ^/ssh/student{{num}}(.*)>
+  DirectorySlash On
+  Require all granted
+  ProxyPass  http://127.0.0.1:{{8000 + num}}
+  ProxyPassReverse /ssh/student{{num}}
 </LocationMatch>
 
 {% endfor %}
