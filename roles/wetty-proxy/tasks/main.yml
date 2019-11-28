@@ -5,7 +5,8 @@
     return_content: yes
     validate_certs: no 
   register: workshop_index_html
-  
+
+# This is a comment    
 # Yes.  This is exceptionally ugly...  and it works.
 - name: Get Student Pod Info
   shell: grep -E '\bssh student[0-9]{1,2}@[0-9].*\b' | sed -E 's/.*student([0-9]{1,2})\@([0-9.]*).*$/\1 \2/'
